@@ -63,3 +63,47 @@ def add_enemies():
     
 add_enemies()
 # ---------- first commit
+top_frame = tkinter.Frame(main_window)
+top_frame.pack(anchor="n")
+
+name_label = tkinter.Label(top_frame, text = "Name: " +name,font=("Arial,16"))
+name_label.grid(row=0, column =0)
+
+Health_label = tkinter.Label(top_frame, text = "Health: " +str(health),font=("Arial,16"))
+Health_label.grid(row=1, column =0)
+
+Money_label = tkinter.Label(top_frame, text = "Money: " +str(money),font=("Arial,16"))
+Money_label.grid(row=0, column =1)
+
+Point_label = tkinter.Label(top_frame, text = "Point: " +str(point),font=("Arial,16"))
+Point_label.grid(row=1, column =1)
+
+def change_labels(health, money, point):
+    Health_label.configure(text="Health: " + str(health))
+    Money_label.configure(text="Money: " + str(money))
+    Point_label.configure(text="Point: " + str(point))
+
+
+bottom_frame = tkinter.Frame(main_window)
+bottom_frame.pack(anchor="s")
+def showWandA():
+    Counter =0 
+    if len(inventory["Weapon"])>0:
+        print("Category:Weapon")
+        print("\nWeapons in inventory:")
+        while Counter< len(inventory["Weapon"]):
+            print(Counter+1,"|",*[str(k) + ':' + str(v) +"|" for k,v in inventory["Weapon"][Counter].items()])
+            Counter+=1
+    else:
+        print("There are no weapons in your inventory")
+
+    Counter = 0
+    if len(inventory["Armour"])>0:
+        print("\nCategory:Armour")
+        print("\nArmours in inventory:")
+        while Counter<len(inventory["Armour"]):
+            print(Counter+1,"|",*[str(k) + ':' + str(v) +"|" for k,v in inventory["Armour"][Counter].items()])
+            Counter+=1
+    else:
+        print("There are no Armours in your inventory")
+# ---------- second commit
