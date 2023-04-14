@@ -169,3 +169,139 @@ def IFWin(FileName):
         f.write("You have already defeated the enemy in this room and collected its contents")
         f.write(", Please choose another room")
 # ---------- third commit
+def Combat(RoomNO):  
+    global health,win
+    if len(inventory["Weapon"])>0:
+        weaponChoice= int(input("\nWhat weapon would you like to fight with? type its number >>>"))
+        if len(inventory["Armour"])>0:
+            Choice= str(input("\nWould you like to use armour? type yes or no>>>"))
+            if Choice == "yes":
+                ArmourChoice= int(input("\nWhat armour would you like to use? Type its number>>>"))
+                print("\nYour Health\t\tEnemy's Health")
+                while health>0 and Enemies["Enemy"][RoomNO-1]["health"]>0:
+                    
+                    print(health,"\t\t\t",Enemies["Enemy"][RoomNO-1]["health"])
+                    Enemies["Enemy"][RoomNO-1]["health"]-=inventory["Weapon"][weaponChoice-1]["damage"] 
+                    health-=Enemies["Enemy"][RoomNO-1]["damage"]/inventory["Armour"][ArmourChoice-1]["durability"]
+                if Enemies["Enemy"][RoomNO-1]["health"]<=0:
+                    win = True
+
+                elif health<=0:
+                    win = False
+
+                del inventory["Weapon"][weaponChoice-1]
+                del inventory["Armour"][ArmourChoice-1]
+
+
+            if Choice=="no":
+                print("Your Health\t\tEnemy's Health")
+                while health>0 and Enemies["Enemy"][RoomNO-1]["health"]>0:
+
+                    print(health,"\t\t\t",Enemies["Enemy"][RoomNO-1]["health"])
+                    Enemies["Enemy"][RoomNO-1]["health"]-=inventory["Weapon"][weaponChoice-1]["damage"] 
+                    health-=Enemies["Enemy"][RoomNO-1]["damage"]
+                
+
+                if Enemies["Enemy"][RoomNO-1]["health"]<=0:
+                    win = True
+
+                elif health<=0:
+                    win = False
+
+                del inventory["Weapon"][weaponChoice-1]
+                
+
+        else:
+            while health>0 and Enemies["Enemy"][RoomNO-1]["health"]>0:
+                print(health, Enemies["Enemy"][RoomNO-1]["health"])
+                
+                Enemies["Enemy"][RoomNO-1]["health"]-=inventory["Weapon"][weaponChoice-1]["damage"] 
+                health-=Enemies["Enemy"][RoomNO-1]["damage"]
+            if Enemies["Enemy"][RoomNO-1]["health"]<=0:
+                win = True
+
+            elif health<=0:
+                win = False
+            del inventory["Weapon"][weaponChoice-1]
+# ---------- fourth commit 
+def Room1():
+   
+    myfile = open("Room1.txt", "r")
+    first_line = myfile.readline()
+    if "Welcome" in first_line:
+        global health,i,point
+        point =6
+        print("Welcome to room 1\n")
+        change_labels(health,money,point)
+
+        with open('Room1.txt', 'r') as file:
+            whole_file = file.readlines()
+            print(whole_file[0])
+            print(whole_file[1],"\nEnemy: ")
+        
+        print(*[str(key) + ':' + str(value) +"|" for key,value in Enemies["Enemy"][0].items()],"\n\nWeapons in inventory:\n")
+        
+        showWandA()
+    
+        if  len(inventory["Weapon"])>0:
+            Combat(1)
+            
+            if win == True:
+                IFWin("Room1")
+            
+            elif win != True:
+                IFlose("Room1")
+
+        elif len(inventory["Weapon"])==0:
+            print("You do not have any weapons. go to shop to buy one in order to initiate a fight")    
+            
+        GameState()
+
+    else: 
+        print(whole_file[0])
+        print(whole_file[1])
+
+    pass    
+    
+
+def Room2():
+    myfile = open("Room2.txt", "r")
+    first_line = myfile.readline()
+    if "Welcome" in first_line:
+        global health,i
+        print("Welcome to room 1\n")
+        change_labels(health,money,point)
+
+        with open('Room2.txt', 'r') as file:
+            whole_file = file.readlines()
+            print(whole_file[0])
+            print(whole_file[1],"\nEnemy: ")
+        
+        
+
+        print(*[str(key) + ':' + str(value) +"|" for key,value in Enemies["Enemy"][1].items()],"\n\nWeapons in inventory:\n")
+        print(health, Enemies["Enemy"][1]["health"])
+        showWandA()
+
+        if  len(inventory["Weapon"])>0:
+            Combat(2)
+            
+            if win == True:
+                IFWin("Room2")
+            
+            elif win != True:
+                IFlose("Room2")
+
+        elif len(inventory["Weapon"])==0:
+            print("You do not have any weapons. go to shop to buy one in order to initiate a fight")    
+
+        GameState()
+
+    else: 
+        with open('Room2.txt', 'r') as file:
+            whole_file = file.readlines()
+            print("\n",whole_file[0])
+            
+
+    pass
+# ---------- fifth commit
