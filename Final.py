@@ -107,3 +107,65 @@ def showWandA():
     else:
         print("There are no Armours in your inventory")
 # ---------- second commit
+def IFlose(FileName): 
+    global health,point
+    print("you died and lost 2 points. respawn in progress")
+    health = 0
+    point-=2
+    with open(str(FileName)+'.txt', 'r') as file:
+        whole_file = file.readlines()
+
+        for idx, item in enumerate(whole_file):
+                if "Enemy" in item:
+                    enemy = whole_file[idx+1].strip().split(",")
+                    enemyUpdatedHealth = int(enemy[2])
+                    enemy[2]= str(enemyUpdatedHealth)
+    
+
+def IFWin(FileName):
+    global health,RoomM,RoomP,point,money,i,TreasureP,TreasureC
+    Counter=0
+    with open(str(FileName)+'.txt', 'r') as file:
+            whole_file = file.readlines()
+            for idx, item in enumerate(whole_file):
+
+                if "money" in item.lower():
+                    RoomM = int(whole_file[idx+1])
+                    money+=RoomM 
+                if "points" in item.lower():
+                    RoomP = int(whole_file[idx+1])
+                    point+=RoomP
+
+                if "weapon" in item.lower():
+                    weapon = whole_file[idx+1].strip().split(",")
+                    inventory["Weapon"].append({"name": weapon[0], "damage": int(weapon[1]), "price": int(weapon[2])})
+                
+                if "Key" in item.lower():
+                    key = whole_file[idx+1].strip().split(",")
+                    inventory["Key"].append({"code": int(key[0]), "price": int(key[1])})
+
+                if "treasure" in item.lower():
+                    TreasureP = int(whole_file[idx+1][2])
+                    
+                    
+            if len(inventory["Key"])>0:
+                choice= str(input("would you like to try to open the treasure chest? type yes or no>>>"))
+                if choice == "yes":       
+                    print("\nKeys in inventory:")
+                    while Counter< len(inventory["Key"]):
+                        print(Counter+1,"|",*[str(k) + ':' + str(v) +"|" for k,v in inventory["Key"][Counter].items()])
+                        Counter+=1
+                        num= int(input("which enter the number of the key you would like to use>>>"))      
+                    if TreasureC== inventory["Key"][num-1]["code"]:
+                        point+=TreasureP
+                        print("You collected",TreasureP,"Points from the chest")
+
+
+
+    print("You defeated the enemy and earned",RoomP,"Points, collected",RoomM,"amount of money","and acquired a new weapon")
+    i+=1
+    with open(str(FileName)+'.txt', "w") as f:
+        f.truncate(0)
+        f.write("You have already defeated the enemy in this room and collected its contents")
+        f.write(", Please choose another room")
+# ---------- third commit
