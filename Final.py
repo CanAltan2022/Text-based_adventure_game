@@ -471,3 +471,56 @@ def shop():
             
     pass
 # ---------- eight commit
+def GameState():
+    global point 
+    if point >=10:
+        print("You have won the game. thanks for playing")
+        main_window.quit()
+        
+
+    elif point < 0: 
+        print("You have lost the game. thanks for playing ")
+    
+        main_window.quit()
+
+def Inventory():
+    print("Welcome to inventory\n")
+    point = 10
+    change_labels(health,money,point)
+    showWandA()
+    Counter =0 
+    if len(inventory["Key"])>0:
+        print("\nCategory:Key")
+        print("\nKeys in inventory:")
+        while Counter< len(inventory["Key"]):
+            print(Counter+1,"|",*[str(k) + ':' + str(v) +"|" for k,v in inventory["Key"][Counter].items()])
+            Counter+=1
+    else:
+        print("\nThere are no keys in your inventory")
+    pass
+
+
+
+
+R1_btn = tkinter.Button(bottom_frame, text= "Room 1", command = Room1)
+R1_btn.grid(row=0, column =0)
+
+R2_btn = tkinter.Button(bottom_frame, text = "Room 2", command= Room2)
+R2_btn.grid(row=1, column =0)
+
+
+R3_btn = tkinter.Button(bottom_frame, text = "Room 3", command= Room3)
+R3_btn.grid(row=0, column =1)
+
+R4_btn = tkinter.Button(bottom_frame, text = "Room 4", command= Room4)
+R4_btn.grid(row=1, column =1)
+
+R5_btn = tkinter.Button(bottom_frame, text = "shop", command= shop)
+R5_btn.grid(row=2, column =0)
+
+R6_btn = tkinter.Button(bottom_frame, text = "Inventory", command= Inventory)
+R6_btn.grid(row=2, column =1)
+
+
+main_window.mainloop()
+# ---------- final commit
