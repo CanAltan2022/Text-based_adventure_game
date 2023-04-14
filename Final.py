@@ -305,3 +305,169 @@ def Room2():
 
     pass
 # ---------- fifth commit
+def Room3():
+    myfile = open("Room3.txt", "r")
+    first_line = myfile.readline()
+    if "Welcome" in first_line:
+        global health,i
+        print("Welcome to room 1\n")
+        change_labels(health,money,point)
+
+        with open('Room3.txt', 'r') as file:
+            whole_file = file.readlines()
+            print(whole_file[0])
+            print(whole_file[1],"\nEnemy: ")
+        
+
+            for idx, item in enumerate(whole_file):
+                if "Enemy" in item:
+                    enemy = whole_file[idx+1].strip().split(",")
+                    Enemies["Enemy"].append({"name": enemy[0],"damage": int(enemy[1]),"health": int(enemy[2])})
+        
+
+        print(*[str(key) + ':' + str(value) +"|" for key,value in Enemies["Enemy"][2].items()],"\n\nWeapons in inventory:\n")
+        
+        showWandA()
+        
+        if  len(inventory["Weapon"])>0:
+            Combat(3)
+            
+            if win == True:
+                IFWin("Room3")
+            
+            elif win != True:
+                IFlose("Room3")
+
+        elif len(inventory["Weapon"])==0:
+            print("You do not have any weapons. go to shop to buy one in order to initiate a fight")    
+
+        GameState()
+
+    else: 
+        print("Hello")
+
+    pass
+
+def Room4():
+    myfile = open("Room4.txt", "r")
+    first_line = myfile.readline()
+    if "Welcome" in first_line:
+        global health,i
+        print("Welcome to room 1\n")
+        change_labels(health,money,point)
+
+        with open('Room4.txt', 'r') as file:
+            whole_file = file.readlines()
+            print(whole_file[0])
+            print(whole_file[1],"\nEnemy: ")
+        
+
+            for idx, item in enumerate(whole_file):
+                if "Enemy" in item:
+                    enemy = whole_file[idx+1].strip().split(",")
+                    Enemies["Enemy"].append({"name": enemy[0],"damage": int(enemy[1]),"health": int(enemy[2])})
+        
+
+        print(*[str(key) + ':' + str(value) +"|" for key,value in Enemies["Enemy"][3].items()],"\n\nWeapons in inventory:\n")
+        
+        showWandA()
+
+        if  len(inventory["Weapon"])>0:
+            Combat(4)
+            
+            if win == True:
+                IFWin("Room4")
+            
+            elif win != True:
+                IFlose("Room4")
+
+        elif len(inventory["Weapon"])==0:
+            print("You do not have any weapons. go to shop to buy one in order to initiate a fight")    
+
+        GameState()
+
+    else: 
+        print("Hello")
+
+    pass
+# ---------- sixth commit
+def Buy():
+    global health,money
+    Category = str(input("\nPlease enter the name of the item's category >>> "))
+    if Category != "Healing_Pad":
+        ItemNo= int(input("\nPlease enter the number of the item >>> "))
+        if money>=Shop[Category][ItemNo-1]["price"]:
+                inventory[Category].append(Shop[Category][ItemNo-1])
+                money-=Shop[Category][ItemNo-1]["price"]
+        else: 
+            print("\nYou do not have enough money to buy this item")
+
+    else: 
+        if money>=Shop[Category][0]["price"]:
+            print("\nYou have bought a healing pad. Current health increased")
+            money-=Shop[Category][0]["price"]
+            if health+Shop[Category][0]["health"]<=100:
+                health+=Shop[Category][0]["health"]
+            elif health+Shop[Category][0]["health"]>100:
+                health =100
+        else:
+            print("\nYou do not have enough money to buy this item")
+
+def Sell():
+    global money
+    Inventory()
+    Category = str(input("\nPlease enter the name of the item's category >>> "))
+    ItemNo= int(input("\nPlease enter the number of the item you would like to sell>>> "))
+    money+=inventory[Category][ItemNo-1]["price"]
+    del inventory[Category][ItemNo-1]
+# ---------- seventh commit
+def shop():
+    global health,money 
+    i =1
+    print("\nWelcome to the shop")
+    point = 10
+    change_labels(health,money,point)
+    with open('Shop.txt', 'r') as file:
+        whole_file = file.readlines()
+        for idx, item in enumerate(whole_file):
+            if "Weapon" in item:
+                print("\nCategory:Weapon:\n")
+                while "weapon" in whole_file[idx+i]:
+                    weapon = whole_file[idx+i].strip().split(",")
+                    Shop["Weapon"].append({"name": weapon[0], "damage": int(weapon[1]), "price": int(weapon[2])})
+                    print(i,"|",*[str(key) + ':' + str(value) +"|" for key,value in Shop["Weapon"][i-1].items()])
+                    i+=1
+            if "Key" in item:
+                i=1
+                print("\nCategory:Key:\n")
+                key = whole_file[idx+1].strip().split(",")
+                Shop["Key"].append({"code": key[0], "price": int(key[1])})
+                print(i,"|",*[str(key) + ':' + str(value) +"|" for key,value in Shop["Key"][0].items()])
+            
+            if "Healing" in item:
+                i=1
+                print("\nCategory:Healing_Pad:\n")
+                heal = whole_file[idx+1].strip().split(",")
+                Shop["Healing_Pad"].append({"health": int(heal[0]), "price": int(heal[1])})
+                print(i,"| Healing Pad|",*[str(key) + ':' + str(value) +"|" for key,value in Shop["Healing_Pad"][0].items()])
+
+            if "Armour" in item:
+                i=1
+                print("\nCategory:Armour:\n")
+                for x in range(1,3): # for some reason when 'while' is used it gives an error
+                    
+                    armour = whole_file[idx+x].strip().split(",")
+                    Shop["Armour"].append({"durability": armour[0], "price": int(armour[1])})
+                    print(i,"|",*[str(key) + ':' + str(value) +"|" for key,value in Shop["Armour"][x-1].items()])
+                    i+=1 
+    answer=str(input("\nWould you like to buy or sell anything? Type yes or no >>> "))
+    # add sell option after creating inv func.
+    if answer == "yes":
+        answer2=str(input("\nWould you like to buy or sell anything? Type buy or sell >>> "))
+        if answer2 == "buy":
+            Buy()
+        elif answer2 == "sell":
+            Sell()
+            
+    pass
+# ---------- eight commit
